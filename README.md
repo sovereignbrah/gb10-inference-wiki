@@ -2,7 +2,9 @@
 
 A source-checked knowledge base for running open-weight LLMs fast and correctly on NVIDIA GB10 hardware (DGX Spark, ASUS Ascent GX10 and other 128 GB unified-memory boxes), on one node or on two or three nodes joined by ConnectX-7 RoCE cables. It is written for the engineers and coding agents who tune serving lanes, not as a tutorial. **Start with the symptom router below**, then read the rules before you touch a lane.
 
-**What is here.** 22 topic pages, each in two parts: the knowledge (mechanism, how each engine does it, what differs on SM121, what has been measured) and the protocol (how to change it on a serving lane one variable at a time, with gates and rollback). Plus a [levers ledger](ledger.md) (one row per lever, with gain band, evidence grade, cost and risk), a [graded registry](registry.md) of about 1,400 public GB10 resources, and [how pages are written](CONTRIBUTING.md).
+**The science.** [`science/core.md`](science/core.md) is the model of the machine an agent should read first (about 15K tokens): the hardware facts that matter, the memory budget as one equation per rank, decode as bytes per step with the bandwidth floor and the speculative-decoding arithmetic, prefill as compute and chunk economics, multi-node as a per-step collective tax, which kernel designs SM121 can and cannot run, how to measure without fooling yourself, the optimization loop, and a failure catalog. Six chapters under [`science/`](science/README.md) derive each part with a worked real-lane example, a decision procedure and traps. Every equation names its terms and units, and every number carries a grade.
+
+**The evidence.** 22 topic pages, each in two parts: the knowledge (mechanism, how each engine does it, what differs on SM121, what has been measured) and the protocol (how to change it on a serving lane one variable at a time, with gates and rollback). Plus a [levers ledger](ledger.md) (one row per lever, with gain band, evidence grade, cost and risk), a [graded registry](registry.md) of about 1,400 public GB10 resources, and [how pages are written](CONTRIBUTING.md).
 
 **How to read a number.** Every claim carries an evidence grade in square brackets: `[Measured]` on the maintainer's fleet of three ASUS Ascent GX10 nodes over direct RoCE cables; `[Community-measured]` by a named public author; `[Code-verified]` read from pinned source; `[Historical diagnostic]` recovered from the maintainer's own incident records; `[Interpretation]` derived, not measured; `[Proposed]` untested. Nothing here is a vendor spec presented as achieved. Nodes are written node-1, node-2, node-3; machine-specific details (hosts, paths, recipe names) are omitted.
 
@@ -154,9 +156,9 @@ Run the protocol in §6 of the page that owns the change, under the rules above,
 
 ---
 
-## What is coming
+## Pointing an agent at this repo
 
-A second layer, *the science of GB10 inference*, is in progress: a compact model of the machine (memory budget, decode as bytes per step, prefill and chunk economics, the multi-node tax, kernels on SM121, measurement) plus a method for reasoning from a new model's architecture card to a predicted recipe. It will be added under `science/` once it is reviewed.
+Give it `science/core.md` first, then the chapter for the phase it is working on (memory, decode, prefill, multi-node, kernels, measurement), then the topic pages the core cites for evidence. The core's rules of use apply: lane constants come from your own lane record, never from this repo; a result holds only for its build, drafter and topology; one memory variable per boot. A [lane record template](science/lane-card-template.md) lists the fields the core reads.
 
 ## Contributing
 
